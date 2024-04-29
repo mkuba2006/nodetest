@@ -54,9 +54,15 @@ app.get('/search', (req, res) => {
 
 
 
-app.get('/tasks', (req, res) => {
-    const { name, password, id } = req.query;
-    console.log(name, password, id);
+app.get('/addtask', (req, res) => {
+    const { name, password, id, title, description } = req.query;
+    console.log('-----');
+    console.log('name:', name);
+    console.log('password:', password);
+    console.log('id:', id);
+    console.log('title:', title);
+    console.log('description:', description);
+
     const sql = 'SELECT users.Name, tasks.tytul, tasks.opis, tasks.date FROM users INNER JOIN tasks ON users.id = tasks.id WHERE users.Name = ?';
     connection.query(sql, [name], (err, results, fields) => {
         if (err) {
@@ -87,6 +93,31 @@ app.post('/add', (req, res) => {
       res.status(200).send('Użytkownik został dodany pomyślnie');
     });
 });
+
+
+
+
+
+
+
+app.get('/tasks', (req, res) => {
+    const { name, password, id } = req.query;
+    console.log(name, password, id);
+    const sql = 'SELECT users.Name, tasks.tytul, tasks.opis, tasks.date FROM users INNER JOIN tasks ON users.id = tasks.id WHERE users.Name = ?';
+    connection.query(sql, [name], (err, results, fields) => {
+        if (err) {
+            console.error('Błąd wyszukiwania użytkownika:', err);
+            return res.status(500).send('Błąd wyszukiwania użytkownika');
+        }
+        if (results.length > 0) {
+            res.status(200).send(results);
+        } else {
+            res.status(404).send('Nie ma takiego użytkownika');
+        }
+    });
+});
+
+
 
 app.delete('/users/:id', (req, res) => {
     const userId = req.params.id;
