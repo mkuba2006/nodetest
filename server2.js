@@ -62,20 +62,21 @@ app.get('/addtask', (req, res) => {
     console.log('id:', id);
     console.log('title:', title);
     console.log('description:', description);
+    console.log('-----');
+    
+    // Sprawdzenie uprawnień użytkownika na podstawie name i password...
 
-    const sql = 'SELECT users.Name, tasks.tytul, tasks.opis, tasks.date FROM users INNER JOIN tasks ON users.id = tasks.id WHERE users.Name = ?';
-    connection.query(sql, [name], (err, results, fields) => {
+    const sqlInsert = 'INSERT INTO tasks (id, tytul, opis) VALUES (?, ?, ?)';
+    connection.query(sqlInsert, [id, title, description], (err, results, fields) => {
         if (err) {
-            console.error('Błąd wyszukiwania użytkownika:', err);
-            return res.status(500).send('Błąd wyszukiwania użytkownika');
+            console.error('Błąd dodawania zadania:', err);
+            return res.status(500).send('Błąd dodawania zadania');
         }
-        if (results.length > 0) {
-            res.status(200).send(results);
-        } else {
-            res.status(404).send('Nie ma takiego użytkownika');
-        }
+        console.log('Zadanie dodane pomyślnie');
+        res.status(200).send('Zadanie dodane pomyślnie');
     });
 });
+
 
 
 
