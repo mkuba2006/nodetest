@@ -31,7 +31,7 @@ app.get('/users', (req, res) => {
             console.error('Błąd zapytania SQL: ' + err.stack);
             return res.status(500).send('Błąd zapytania SQL');
         }
-        console.log('Wyniki zapytania:', results);
+        //console.log('Wyniki zapytania:', results);
         res.send(results);
     });
 });
@@ -64,8 +64,6 @@ app.get('/addtask', (req, res) => {
     console.log('description:', description);
     console.log('-----');
     
-    // Sprawdzenie uprawnień użytkownika na podstawie name i password...
-
     const sqlInsert = 'INSERT INTO tasks (id, tytul, opis) VALUES (?, ?, ?)';
     connection.query(sqlInsert, [id, title, description], (err, results, fields) => {
         if (err) {
